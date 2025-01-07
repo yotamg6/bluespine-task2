@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import PatientsContainer from "./PatientsContainer";
+import Patient from "./components/Patient";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <PatientsContainer />
+    <Patient />
   </React.StrictMode>
 );

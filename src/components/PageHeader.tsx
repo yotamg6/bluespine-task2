@@ -1,14 +1,18 @@
 import React from "react";
-import { Box, Typography, Paper } from "@mui/material";
+import { Typography } from "@mui/material";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import {
   HeaderContent,
   HeaderPaper,
   IconWrapper,
   TextContent,
-} from "./styledComponents";
+} from "../styles/styles";
 
-const PatientPageHeader = () => {
+interface PageHeaderProps {
+  header: string;
+}
+
+const PageHeader = ({ header }: PageHeaderProps) => {
   return (
     <HeaderPaper elevation={3}>
       <HeaderContent>
@@ -21,7 +25,7 @@ const PatientPageHeader = () => {
             component="h1"
             sx={{ color: "common.white", fontWeight: "bold" }}
           >
-            Patient Medical History
+            {header}
           </Typography>
         </TextContent>
       </HeaderContent>
@@ -29,4 +33,4 @@ const PatientPageHeader = () => {
   );
 };
 
-export default PatientPageHeader;
+export default PageHeader;

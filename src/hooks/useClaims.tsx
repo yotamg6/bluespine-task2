@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { patientsApi } from "./patientsApi";
-import { ClaimByDate } from "./types";
+import { patientsApi } from "../api/patientsApi";
+import { ClaimByDate } from "../types/types";
 
 interface UseClaimsProps {
   patientId: number;
@@ -22,22 +22,24 @@ const useClaims = ({ patientId, numOfClaims }: UseClaimsProps) => {
         numOfClaims
       );
 
-      if (Object.keys(patientClaims.claim).length === 0) {
+      if (Object.keys(patientClaims.claims).length === 0) {
         setHasMore(false);
         setIsLoading(false);
         return;
       }
       setClaims((prevClaims) => ({
         ...prevClaims,
-        ...patientClaims.claim,
+        ...patientClaims.claims,
       }));
       setCurrentIndex(patientClaims.currentIndex);
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     fecthData();
   }, [page, patientId, numOfClaims]);
+
   return {
     claims,
     currentIndex,
@@ -45,7 +47,7 @@ const useClaims = ({ patientId, numOfClaims }: UseClaimsProps) => {
     setPage,
     isLoading,
     hasMore,
-    setIsLoading
+    setIsLoading,
   };
 };
 export default useClaims;

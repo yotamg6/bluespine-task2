@@ -1,20 +1,21 @@
 import { useEffect, useRef } from "react";
 import TimelineItem from "./TimeLineElement";
-import useClaims from "./useClaims";
-import { TIMELINE_PAGE_SIZE } from "./utils";
-import { Box, CircularProgress, styled } from "@mui/material";
+import { CircularProgress } from "@mui/material";
+import { TIMELINE_PAGE_SIZE } from "../utils/constants";
+import useClaims from "../hooks/useClaims";
 
 interface TimeLineContainerProps {
   patientId: string;
 }
 
-const TimeLineContainer = ({ patientId }: TimeLineContainerProps) => {
+//TODO: timeline should be dumb . All patient specifics should happen at the Patient component, passing the data here
+
+const TimeLine = ({ patientId }: TimeLineContainerProps) => {
   const containerRef = useRef(null);
-  const { claims, currentIndex, setPage, isLoading, hasMore, setIsLoading } =
-    useClaims({
-      patientId: Number(patientId), //TODO: see if necessary to parse, maybe it canbe a string throughout
-      numOfClaims: TIMELINE_PAGE_SIZE,
-    });
+  const { claims, currentIndex, setPage, isLoading, hasMore } = useClaims({
+    patientId: Number(patientId),
+    numOfClaims: TIMELINE_PAGE_SIZE,
+  });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -37,7 +38,7 @@ const TimeLineContainer = ({ patientId }: TimeLineContainerProps) => {
         observer.unobserve(currentContainer);
       }
     };
-  }, [isLoading, currentIndex, claims]);
+  }, [isLoading, currentIndex, claims, hasMore, setPage]);
 
   return (
     <div
@@ -49,7 +50,7 @@ const TimeLineContainer = ({ patientId }: TimeLineContainerProps) => {
       {Object.entries(claims).map(([date, claimDetails], index) => (
         <TimelineItem
           claim={claimDetails}
-          key={`${date}-${claimDetails.numOfVisits}`} // TODO key!
+          key={index}
           date={date}
           isLeft={index % 2 === 0}
         />
@@ -70,4 +71,4 @@ const TimeLineContainer = ({ patientId }: TimeLineContainerProps) => {
     </div>
   );
 };
-export default TimeLineContainer;
+export default TimeLine;

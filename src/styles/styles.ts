@@ -24,7 +24,7 @@ export const TextContent = styled(Box)({
   flexDirection: "column",
 });
 
-export const PatientInfo = styled(Typography)(({ theme }) => ({
+export const StyledInfo = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.primary,
   "& span": {
     color: theme.palette.text.secondary,

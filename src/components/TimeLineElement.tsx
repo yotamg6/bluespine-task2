@@ -8,19 +8,17 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { ClaimByDate } from "./types";
-import { getCodeLinks, getTags, getTagsCount } from "./utils";
+import { ClaimByDate } from "../types/types";
+import { getCodeLinks, getTags, getTagsCount } from "../utils/utils";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import {
-  Timeline,
   TimelineItem,
   TimelineSeparator,
   TimelineConnector,
   TimelineContent,
-  TimelineOppositeContent,
   TimelineDot,
 } from "@mui/lab";
-import { StyledCard } from "./styledComponents";
+import { StyledCard } from "../styles/styles";
 
 interface TimeLineItemProps {
   claim: ClaimByDate;
@@ -37,11 +35,6 @@ const TimelineElement = ({ claim, date, isLeft }: TimeLineItemProps) => {
 
   return (
     <TimelineItem position={isLeft ? "left" : "right"}>
-      <TimelineOppositeContent>
-        <Typography variant="body2" color="textSecondary">
-          {date}
-        </Typography>
-      </TimelineOppositeContent>
       <TimelineSeparator>
         <TimelineDot
           sx={{
@@ -51,25 +44,29 @@ const TimelineElement = ({ claim, date, isLeft }: TimeLineItemProps) => {
         <TimelineConnector />
       </TimelineSeparator>
       <TimelineContent>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          align="center"
+          sx={{ mb: 1 }}
+        >
+          {date}
+        </Typography>
         <StyledCard>
           <CardContent>
-            <Stack
-              direction="row"
-              justifyContent={isLeft ? "flex-end" : "flex-start"}
-            >
+            <Stack direction="row" justifyContent="center">
               <Typography
                 variant="h6"
                 sx={{ fontWeight: "bold" }}
                 style={{
                   color: claim.totalAllowed > 5000 ? "red" : "inherit",
                 }}
-                textAlign={isLeft ? "right" : "left"}
+                align="center"
               >
-                {/*TODO: change to k, or add comma after 2 first decimals */}$
-                {claim.totalAllowed}
+                ${claim.totalAllowed}
               </Typography>
             </Stack>
-            <Box sx={{ marginTop: 1 }}>
+            <Box sx={{ marginTop: 1, textAlign: "center" }}>
               <Typography component="span">Diagnosis: </Typography>
               <Box
                 sx={{
@@ -77,7 +74,7 @@ const TimelineElement = ({ claim, date, isLeft }: TimeLineItemProps) => {
                   flexWrap: "wrap",
                   gap: 1,
                   marginTop: 1,
-                  justifyContent: isLeft ? "flex-end" : "flex-start",
+                  justifyContent: "center",
                 }}
               >
                 {claim.diagnosis.map((diag, idx) => (
@@ -97,7 +94,7 @@ const TimelineElement = ({ claim, date, isLeft }: TimeLineItemProps) => {
             </Box>
             <Typography
               variant="body2"
-              sx={{ marginTop: 2, fontWeight: "bold" }}
+              sx={{ marginTop: 2, fontWeight: "bold", textAlign: "center" }}
             >
               Codes:
             </Typography>
@@ -108,7 +105,7 @@ const TimelineElement = ({ claim, date, isLeft }: TimeLineItemProps) => {
                 padding: 0,
                 listStyle: "none",
                 display: "flex",
-                justifyContent: isLeft ? "flex-end" : "flex-start",
+                justifyContent: "center",
               }}
             >
               {visibleCodes.map((code, idx) => (
@@ -132,13 +129,19 @@ const TimelineElement = ({ claim, date, isLeft }: TimeLineItemProps) => {
                   title={
                     <Box>
                       {hiddenCodes.map((link, idx) => (
-                        <Typography
-                          key={idx}
-                          sx={{
-                            fontWeight: "bold",
-                          }}
-                        >
-                          {link.shortenedCode}
+                        <Typography key={idx}>
+                          <a
+                            href={link.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              textDecoration: "none",
+                              color: "#007BFF",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            {link.shortenedCode}
+                          </a>
                         </Typography>
                       ))}
                     </Box>
@@ -164,16 +167,22 @@ const TimelineElement = ({ claim, date, isLeft }: TimeLineItemProps) => {
                 </Tooltip>
               )}
             </Box>
-            <Box sx={{ marginTop: 2 }}>
+            <Box
+              sx={{
+                marginTop: 2,
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                gap: 1,
+              }}
+            >
               {Object.entries(tagsCount).map(([tag, count], idx) => (
                 <Chip
                   key={idx}
-                  label={`${tag} (${count})`}
+                  label={count > 1 ? `${tag} (${count})` : tag}
                   icon={<LocalOfferIcon />}
                   size="small"
                   sx={{
-                    marginRight: 1,
-                    marginBottom: 1,
                     backgroundColor: "#f0f0f0",
                     fontWeight: "bold",
                   }}

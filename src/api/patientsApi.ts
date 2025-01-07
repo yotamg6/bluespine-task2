@@ -1,9 +1,8 @@
 import _ from "lodash";
-import patientsData from "./patientsData.json";
-import { groupClaimsByDate, sortStringDate } from "./utils";
-import { MedicalClaim } from "./types";
-
-const DELAY = 500; //MS
+import patientsData from "../patientsData.json";
+import { groupClaimsByDate, sortStringDate } from "../utils/utils";
+import { MedicalClaim } from "../types/types";
+import { DELAY } from "../utils/constants";
 
 const withDelay = async <T>(data: T): Promise<T> => {
   await new Promise((resolve) => setTimeout(resolve, DELAY));
@@ -11,7 +10,6 @@ const withDelay = async <T>(data: T): Promise<T> => {
 };
 
 export const patientsApi = {
-  //TODO:  should I have here some form of endpoints instead? and a mapper indicating each endpoint to functionality?
   getPatients: async () => {
     return await withDelay(patientsData);
   },
@@ -23,7 +21,7 @@ export const patientsApi = {
   },
   getPatientClaims: async (
     patientId: number,
-    page?: number, //TODO: eventually make optional again in all places
+    page?: number,
     pageSize?: number
   ) => {
     const patient = (await patientsApi.getPatientById(patientId)).sort(
